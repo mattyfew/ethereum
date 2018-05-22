@@ -1,17 +1,19 @@
 import React, { Component } from 'react'
 import Layout from '../../components/Layout'
 import Campaign from '../../ethereum/campaign'
-import { Card } from 'semantic-ui-react'
+import { Card, Grid } from 'semantic-ui-react'
 import web3 from '../../ethereum/web3'
+import ContributeForm from '../../components/ContributeForm'
 
 class CampaignShow extends Component {
     static async getInitialProps(props) {
-        // props.query.addressthis is the prop address from the URL
+        // props.query.address is the prop address from the URL
 
         const campaign = Campaign(props.query.address)
         const summary = await campaign.methods.getSummary().call()
 
         return {
+            address: props.query.address,
             minimumContribution: summary[0],
             balance: summary[1],
             requestsCount: summary[2],
@@ -57,7 +59,16 @@ class CampaignShow extends Component {
     render() {
         return (
             <Layout>
-                { this.renderCards() }
+                <h3>Campaign Show</h3>
+
+                <Grid>
+                    <Grid.Column width={10}>
+                        { this.renderCards() }
+                    </Grid.Column>
+                    <Grid.Column width={6}>
+                        <ContributeForm address={ this.props.address } />
+                    </Grid.Column>
+                </Grid>
             </Layout>
         )
     }
