@@ -7,7 +7,6 @@ class CampaignIndex extends Component {
     // static puts the property on the class, rather than the instance of the class
     static async getInitialProps() {
         const campaigns = await factory.methods.getDeployedCampaigns().call()
-
         return { campaigns }
     }
 
