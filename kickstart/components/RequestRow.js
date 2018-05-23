@@ -18,7 +18,9 @@ class RequestRow extends Component {
         const campaign = Campaign(this.props.address)
         const accounts = await web3.eth.getAccounts()
 
-        await campaign.methods.finalizeRequest(this.props.id)
+        await campaign.methods.finalizeRequest(this.props.id).send({
+            from: accounts[0]
+        })
     }
 
     render() {
@@ -40,18 +42,18 @@ class RequestRow extends Component {
                                 basic
                                 color="green"
                                 onClick={ this.onApprove }
-                                >Approve</Button>
+                            >Approve</Button>
                         )
                     }
                 </Cell>
                 <Cell>
-                    <Button
-                        color="teal"
-                        basic
-                        onClick={ this.onFinalize }
-                    >
-                        Finalize
-                    </Button>
+                    {
+                        request.complete ? null : (
+                            <Button color="teal" basic onClick={ this.onFinalize }>
+                                Finalize
+                            </Button>
+                        )
+                    }
                 </Cell>
             </Row>
         )
